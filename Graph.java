@@ -28,4 +28,12 @@ public class Graph{
 			vertexSet.get(nodeId).resetDistance();
 		}
 	}
+
+	public void populate(String input){
+		// reads stuff from input file and populates the graph
+	}
+
+	public void dijkstraSSP(source,destination){
+		// Implements dijkstra ssp using Fibonacci;
+	}
 }
