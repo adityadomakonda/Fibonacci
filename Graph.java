@@ -18,7 +18,7 @@ public class Graph{
 			GraphNode newVertex = new GraphNode(id);
 			vertexSet.put(id,newVertex);
 			numOfVertices++;
-			System.out.println("New vertex added with id: "+id);
+			System.out.println("New vertex added with id: "+id+"	total vetices: "+numOfVertices);
 		}
 	}
 
@@ -27,13 +27,61 @@ public class Graph{
 		for(int nodeId: vertexSet.keySet()){
 			vertexSet.get(nodeId).resetDistance();
 		}
+		System.out.println("All vertex distances set to infinty");
 	}
 
 	public void populate(String input){
 		// reads stuff from input file and populates the graph
+		try{
+			Scanner in = new Scanner(new File(input));
+			int inputNumOfVertices = in.nextInt();
+			int inputNumOfEdges = in.nextInt();
+			for(int i=0;i<inputNumOfEdges;i++){
+				int vertex1 = in.nextInt();
+				int vertex2 = in.nextInt();
+				long weight = in.nextLong();
+				addVertex(vertex1);
+				addVertex(vertex2);
+				vertexSet.get(vertex1).addNeighbor(vertex2,weight);
+				vertexSet.get(vertex2).addNeighbor(vertex1,weight);
+			}
+		}
+		catch(Exception e){
+			System.out.println("File not found: "+input);
+		}
+		
 	}
 
-	public void dijkstraSSP(source,destination){
+	public void dijkstraSSP(int source,int destination){
 		// Implements dijkstra ssp using Fibonacci;
+		resetAllDistances();
+		vertexSet.get(source).setDistance(0);
+		HashSet<Integer> visited = new HashSet<Integer>();
+		PriorityQueue<GraphNode> heap = new PriorityQueue<GraphNode>();
+		GraphNode start_node = vertexSet.get(source);
+		start_node.path = Integer.toString(start_node.id);
+		heap.add(start_node);
+		while(!heap.isEmpty()){
+			GraphNode min = heap.poll();
+			if(min.id == destination){
+				System.out.println("Shortest Distance between node: "+source+"  and node: "+destination+"  is: "+min.distance+"\n with path: "+min.path);
+				break;
+			}
+			visited.add(min.id);
+			for(AdjacencyNode neighbor: min.adjacencyList){
+				GraphNode neighborNode = vertexSet.get(neighbor.vertexId);
+				long edge_weight = neighbor.weight;
+				long new_distance = min.distance + edge_weight;
+				long old_distance =  neighborNode.distance;
+				if(new_distance < old_distance){
+					if(old_distance != Long.MAX_VALUE){
+						heap.remove(neighborNode);
+					}
+					neighborNode.distance = new_distance;
+					neighborNode.path = min.path + " " + Integer.toString(neighborNode.id);
+					heap.add(neighborNode);
+				}
+			}
+		}
 	}
 }

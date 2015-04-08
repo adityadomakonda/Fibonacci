@@ -5,9 +5,9 @@ import java.math.*;
 
 public class AdjacencyNode{
 	int vertexId;
-	long distance;
-	public AdjacencyNode(int id, long distance){
-		this.id = id;
-		this.distance = distance;
+	long weight;
+	public AdjacencyNode(int id, long weight){
+		vertexId = id;
+		this.weight = weight;
 	}
 }
