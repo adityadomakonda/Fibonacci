@@ -49,41 +49,116 @@ public class FibonacciHeap{
 		if(head == null){
 			// Heap is empty
 			System.out.println("removeMin failed: Heap is empty");
-			return -1;
-		}
-		else if(head.right == head){
-			// Single min tree
-			GraphNode min = head.vertex;
-			//numOfMinTrees = head.degree;
-			head = head.child;
-			// set new min
-			if(numOfMinTrees < 2){
-				// if heap has only one or no min trees then there is no need to update the head;
-				System.out.println("min removed is: "+min+"		new heap has: "+numOfMinTrees+"		min trees at head");
-				return min;
-			}
-			else{
-				// Finding new min				
-				numOfMinTrees = pairWiseCombine(head);
-				FibonacciNode new_min = head;
-				FibonacciNode cur = head.left;
-				while(cur != head){
-					if(cur.data < new_min.data){
-						new_min = cur;
-					}
-					cur = cur.left;
-				}
-				head = new_min;
-				System.out.println("min removed is: "+min+"		new heap has: "+numOfMinTrees+"		min trees at head and new min is: "+head.data);
-				return min;
-			}			
+			return null;
 		}
 		else{
-			// More than one min trees are present in the heap
-			int min = head.vertex.distance;
-			FibonacciNode min_node = head;
-
+			FibonacciNode min = head;
+			FibonacciNode child = head.child;
+			if(head != head.right){
+				head.left.right = head.right;
+				head.right.left = head.left;
+				head = head.right;
+				//updateMin();
+			}
+			else{
+				head = null;
+			}
+			// change childs parent to nulls
+			if(child == null){
+				updateMin();
+				return min.vertex;
+			}
+			FibonacciNode cur = child.right;
+			child.parent = null;
+			while(cur != child){
+				cur.parent = null;
+				cur = cur.right;
+			}
+			meld(head,child);
+			pairWiseMerge();
+			updateMin();
+			return min.vertex;
 		}
+	}
+
+	public void updateMin(){
+		if(head == null){
+			return;
+		}
+		if(head != head.right){
+			FibonacciNode start = head;
+			FibonacciNode cur = head.right;
+			while(cur != start){
+				if(cur.vertex.distance < head.vertex.distance){
+					head = cur;
+				}
+				cur = cur.right;
+			}
+			System.out.println("updateMin: New min set : "+head.vertex.distance);
+			return;
+		}
+		else{
+			return;
+		}
+
+	}
+
+	public void pairWiseMerge(){
+		HashMap<Integer,FibonacciNode> degree_table = new HashMap<Integer,FibonacciNode>();
+		LinkedList<FibonacciNode> queue = new LinkedList<FibonacciNode>();
+		FibonacciNode cur = head.right;
+		queue.add(head);
+		while(cur != head){
+			queue.add(cur);
+			cur = cur.right;
+		}
+		while(!queue.isEmpty()){
+			FibonacciNode cur_min_tree = queue.remove();
+			cur_min_tree.childCut = false;
+			if(!degree_table.containsKey(cur_min_tree.degree)){
+				degree_table.put(cur_min_tree.degree, cur_min_tree);
+			}
+			else {
+				FibonacciNode tree_with_same_degree = degree_table.get(cur_min_tree.degree);
+				degree_table.remove(cur_min_tree.degree);
+				FibonacciNode merged_tree = mergeTrees(cur_min_tree,tree_with_same_degree);
+				queue.add(merged_tree);
+				degree_table.put(merged_tree.degree,merged_tree);
+			}
+		}
+		return;
+	}
+
+	public FibonacciNode mergeTrees(FibonacciNode tree_1, FibonacciNode tree_2){
+		// merges tree_1 with tree_2
+		// update head
+		//make tree_1 have the tree with smalles min
+		if(tree_2.vertex.distance < tree_1.vertex.distance){
+			// swap to make tree_1 smallest
+			FibonacciNode temp = tree_1;
+			tree_1 = tree_2;
+			tree_2 = temp;
+		}
+		// make tree_2 a subtree of tree_1
+		if(tree_1.child == null){
+			// tree_1 has no children
+			tree_1.child = tree_2;
+			tree_2.parent = tree_1;
+			tree_2.left = tree_2;
+			tree_2.right = tree_2;
+			tree_1.degree++;
+		}
+		else{
+			// merge tree_1 child list with tree_2
+			tree_2.parent = tree_1;
+			tree_2.right = tree_1.child;
+			tree_2.left = tree_1.child.left;
+			tree_2.left.right = tree_2;
+			tree_1.child.left = tree_2;
+			tree_1.degree++;
+		}
+		head = tree_1;
+		return tree_1;
 	}
 
 	public void meld(FibonacciNode heap_1, FibonacciNode heap_2){
@@ -92,15 +167,18 @@ public class FibonacciHeap{
 		
 		if(heap_1 == null && heap_2 == null){
 			System.out.println("Melding: two empty trees");
+			updateMin();
 			return;
 		}
 		else if(heap_1 == null && heap_2 !=null){
 			heap_1 = heap_2;
 			System.out.println("Melding: empty heap_1 with heap_2");
+			updateMin();
 			return;
 		}
 		else if(heap_1 != null && heap_2 ==null){
 			System.out.println("Melding: heap_1 with empty heap_2");
+			updateMin();
 			return;
 		}
 		else{
@@ -111,6 +189,7 @@ public class FibonacciHeap{
 			heap_2.left = heap_1;
 			heap_1 = min;	
 			System.out.println("Melding: heap_1 with heap_2 and new min is:" + heap_1.vertex.distance);
+			updateMin();
 			return;
 		}		
 	}
@@ -169,11 +248,31 @@ public class FibonacciHeap{
 				}
 				node.parent = null;
 				return;
+			}
+			else{
+			// nothing to do for this case
+				head = null;
+				return;
 			}			
 		}
 		else{
 			node.left.right = node.right;
 			node.right.left = node.left;
+			if(node == head){
+				// since head is being remove we have to update the min;
+				
+				FibonacciNode start = head.right;
+				FibonacciNode temp = start;
+				head = head.right;
+				temp = temp.right;
+				while(temp != start){
+					if(temp.vertex.distance < head.vertex.distance){
+						head = temp;
+					}
+					temp = temp.right;
+				}
+				System.out.println("New min set as previous head was removed. New min: "+head.vertex.distance);
+			}
 			if(node.parent != null){
 				node.parent.degree--;
 				if(node.parent.degree < 0){
@@ -256,11 +355,12 @@ public class FibonacciHeap{
 	public void decreaseKey(int id, long new_key){
 		System.out.println("DecreaseKey called");
 		FibonacciNode node = find(id);
+		long old_val = node.vertex.distance;
 		node.vertex.distance = new_key;
 		if(node.parent == null){
 			// node is one of the min trees			
 			head = (node.vertex.distance < head.vertex.distance)?node:head;
-			System.out.println("decreaseKey: of id: "+id+" from: "+node.vertex.distance+"   to: "+new_key+"  node is root of a min tree");
+			System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is root of a min tree");
 			return;
 		}
 		else{
@@ -269,8 +369,9 @@ public class FibonacciHeap{
 				System.out.println("decreaseKey: new key caused inconsistent heap so breaking off at node and triggering cascadeCut");
 				removeFromParentAndSiblingList(node);
 				meld(head,node);
+				updateMin();
 			}
-			System.out.println("decreaseKey: of id: "+id+" from: "+node.vertex.distance+"   to: "+new_key+"  node is not a root of a min tree");
+			System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is not a root of a min tree");
 			return;
 		}
 	}

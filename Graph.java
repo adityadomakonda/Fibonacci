@@ -57,29 +57,36 @@ public class Graph{
 		resetAllDistances();
 		vertexSet.get(source).setDistance(0);
 		HashSet<Integer> visited = new HashSet<Integer>();
-		PriorityQueue<GraphNode> heap = new PriorityQueue<GraphNode>();
+		//PriorityQueue<GraphNode> heap = new PriorityQueue<GraphNode>();
+		FibonacciHeap heap = new FibonacciHeap();
 		GraphNode start_node = vertexSet.get(source);
 		start_node.path = Integer.toString(start_node.id);
-		heap.add(start_node);
-		while(!heap.isEmpty()){
-			GraphNode min = heap.poll();
+		heap.insert(start_node);
+		visited.add(start_node.id);
+		while(heap != null){
+			//GraphNode min = heap.poll();
+			GraphNode min = heap.removeMin();
 			if(min.id == destination){
 				System.out.println("Shortest Distance between node: "+source+"  and node: "+destination+"  is: "+min.distance+"\n with path: "+min.path);
 				break;
 			}
-			visited.add(min.id);
+			//visited.add(min.id);
 			for(AdjacencyNode neighbor: min.adjacencyList){
 				GraphNode neighborNode = vertexSet.get(neighbor.vertexId);
+				if(!visited.contains(neighborNode.id)){
+					heap.insert(neighborNode);
+				}
 				long edge_weight = neighbor.weight;
 				long new_distance = min.distance + edge_weight;
 				long old_distance =  neighborNode.distance;
 				if(new_distance < old_distance){
-					if(old_distance != Long.MAX_VALUE){
+					/*if(old_distance != Long.MAX_VALUE){
 						heap.remove(neighborNode);
-					}
-					neighborNode.distance = new_distance;
+					}*/
+					//neighborNode.distance = new_distance;
 					neighborNode.path = min.path + " " + Integer.toString(neighborNode.id);
-					heap.add(neighborNode);
+					//heap.add(neighborNode);
+					heap.decreaseKey(neighborNode.id, new_distance);
 				}
 			}
 		}
