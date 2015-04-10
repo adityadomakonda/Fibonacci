@@ -14,13 +14,13 @@ public class GraphNode implements Comparable<GraphNode>{
 		adjacencyList = new LinkedList<AdjacencyNode>();
 		distance = Integer.MAX_VALUE;
 		path = "";
-		System.out.println("New GraphNode Created");
+		//System.out.println("New GraphNode Created");
 	}
 
 	public void addNeighbor(int id, long weight){
 		AdjacencyNode newAdjacencyNode = new AdjacencyNode(id,weight);
 		adjacencyList.add(newAdjacencyNode);
-		System.out.println("GraphNode with id: "+id+"	added to GraphNode "+this.id+"'s adjecency list and edge weight is: "+weight);
+		//System.out.println("GraphNode with id: "+id+"	added to GraphNode "+this.id+"'s adjecency list and edge weight is: "+weight);
 	}
 
 	public void resetDistance(){

@@ -9,7 +9,7 @@ public class FibonacciHeap{
 
 	public FibonacciHeap(){
 		head = null;
-		System.out.println("FibonacciHeap created");
+		//System.out.println("FibonacciHeap created");
 		numOfMinTrees = 0;
 	}
     /*
@@ -27,7 +27,7 @@ public class FibonacciHeap{
 			head = new_node;
 			head.left = head;
 			head.right = head;
-			System.out.println("Node with vertex id: "+vertex.id+"	and distance: "+vertex.distance+"  inserted as head");
+			//System.out.println("Node with vertex id: "+vertex.id+"	and distance: "+vertex.distance+"  inserted as head");
 			return;
 		}
 		else{
@@ -36,7 +36,7 @@ public class FibonacciHeap{
 			new_node.left = head.left;
 			head.left = new_node;
 			new_node.right = head;
-			System.out.println("Node with vertex id: "+vertex.id+"	and distance: "+vertex.distance+"  inserted to the left of head");			
+			//System.out.println("Node with vertex id: "+vertex.id+"	and distance: "+vertex.distance+"  inserted to the left of head");			
 		}
 		// Update the new min
 		if(new_node.vertex.distance < head.vertex.distance){
@@ -46,6 +46,7 @@ public class FibonacciHeap{
 	}
 
 	public GraphNode removeMin(){
+		System.out.println("\n");
 		if(head == null){
 			// Heap is empty
 			System.out.println("removeMin failed: Heap is empty");
@@ -66,6 +67,7 @@ public class FibonacciHeap{
 			// change childs parent to nulls
 			if(child == null){
 				updateMin();
+				//System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
 				return min.vertex;
 			}
 			FibonacciNode cur = child.right;
@@ -77,6 +79,7 @@ public class FibonacciHeap{
 			meld(head,child);
 			pairWiseMerge();
 			updateMin();
+			//System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
 			return min.vertex;
 		}
 	}
@@ -94,7 +97,7 @@ public class FibonacciHeap{
 				}
 				cur = cur.right;
 			}
-			System.out.println("updateMin: New min set : "+head.vertex.distance);
+			//System.out.println("updateMin: New min set : "+head.vertex.distance);
 			return;
 		}
 		else{
@@ -104,6 +107,7 @@ public class FibonacciHeap{
 	}
 
 	public void pairWiseMerge(){
+		long count = 0;
 		HashMap<Integer,FibonacciNode> degree_table = new HashMap<Integer,FibonacciNode>();
 		LinkedList<FibonacciNode> queue = new LinkedList<FibonacciNode>();
 		FibonacciNode cur = head.right;
@@ -122,10 +126,12 @@ public class FibonacciHeap{
 				FibonacciNode tree_with_same_degree = degree_table.get(cur_min_tree.degree);
 				degree_table.remove(cur_min_tree.degree);
 				FibonacciNode merged_tree = mergeTrees(cur_min_tree,tree_with_same_degree);
+				count++;
 				queue.add(merged_tree);
 				degree_table.put(merged_tree.degree,merged_tree);
 			}
 		}
+		System.out.println("Pairwise Merged with  "+count+"   merges");
 		return;
 	}
 
@@ -166,13 +172,13 @@ public class FibonacciHeap{
 		// appends heap_2 to the right of the min of heap_1
 		
 		if(heap_1 == null && heap_2 == null){
-			System.out.println("Melding: two empty trees");
+			//System.out.println("Melding: two empty trees");
 			updateMin();
 			return;
 		}
 		else if(heap_1 == null && heap_2 !=null){
 			heap_1 = heap_2;
-			System.out.println("Melding: empty heap_1 with heap_2");
+			//System.out.println("Melding: empty heap_1 with heap_2");
 			updateMin();
 			return;
 		}
@@ -188,7 +194,7 @@ public class FibonacciHeap{
 			heap_1.right = heap_2;
 			heap_2.left = heap_1;
 			heap_1 = min;	
-			System.out.println("Melding: heap_1 with heap_2 and new min is:" + heap_1.vertex.distance);
+			//System.out.println("Melding: heap_1 with heap_2 and new min is:" + heap_1.vertex.distance);
 			updateMin();
 			return;
 		}		

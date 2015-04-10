@@ -20,6 +20,6 @@ public class FibonacciNode{
 		left = null;
 		right = null;
 		child = null;
-		System.out.println("FibonacciNode created");
+		//System.out.println("FibonacciNode created");
 	}
 }

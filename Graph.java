@@ -75,6 +75,7 @@ public class Graph{
 				GraphNode neighborNode = vertexSet.get(neighbor.vertexId);
 				if(!visited.contains(neighborNode.id)){
 					heap.insert(neighborNode);
+					visited.add(neighborNode.id);
 				}
 				long edge_weight = neighbor.weight;
 				long new_distance = min.distance + edge_weight;
