@@ -14,7 +14,7 @@ public class FibonacciNode{
 
 	public FibonacciNode(GraphNode vertex){
 		degree = 0;
-		this.data = data;
+		this.vertex = vertex;
 		childCut = false;
 		parent = null;
 		left = null;
