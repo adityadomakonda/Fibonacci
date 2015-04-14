@@ -18,7 +18,7 @@ public class Graph{
 			GraphNode newVertex = new GraphNode(id);
 			vertexSet.put(id,newVertex);
 			numOfVertices++;
-			System.out.println("New vertex added with id: "+id+"	total vetices: "+numOfVertices);
+			//System.out.println("New vertex added with id: "+id+"	total vetices: "+numOfVertices);
 		}
 	}
 
@@ -92,4 +92,5 @@ public class Graph{
 			}
 		}
 	}
+
 }

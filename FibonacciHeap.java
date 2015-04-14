@@ -46,7 +46,7 @@ public class FibonacciHeap{
 	}
 
 	public GraphNode removeMin(){
-		System.out.println("\n");
+		//System.out.println("\n");
 		if(head == null){
 			// Heap is empty
 			System.out.println("removeMin failed: Heap is empty");
@@ -67,7 +67,7 @@ public class FibonacciHeap{
 			// change childs parent to nulls
 			if(child == null){
 				updateMin();
-				//System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
+				System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
 				return min.vertex;
 			}
 			FibonacciNode cur = child.right;
@@ -79,7 +79,7 @@ public class FibonacciHeap{
 			meld(head,child);
 			pairWiseMerge();
 			updateMin();
-			//System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
+			System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
 			return min.vertex;
 		}
 	}
@@ -206,7 +206,7 @@ public class FibonacciHeap{
 			return;
 		}
 		if(head.vertex.id == id){
-			System.out.println("Remove: Item requested to be removed id: "+id+"  is the min. Calling Removemin");
+			//System.out.println("Remove: Item requested to be removed id: "+id+"  is the min. Calling Removemin");
 			removeMin();
 			return;
 		}
@@ -214,7 +214,7 @@ public class FibonacciHeap{
 		FibonacciNode node_to_remove = find(id);
 		if(node_to_remove.child == null){
 			// No children to add to min tree collection
-			System.out.println("Removed node with id: "+id+"  : and this node has no children");
+			//System.out.println("Removed node with id: "+id+"  : and this node has no children");
 			removeFromParentAndSiblingList(node_to_remove);				
 			return;
 		}
@@ -277,7 +277,7 @@ public class FibonacciHeap{
 					}
 					temp = temp.right;
 				}
-				System.out.println("New min set as previous head was removed. New min: "+head.vertex.distance);
+				//System.out.println("New min set as previous head was removed. New min: "+head.vertex.distance);
 			}
 			if(node.parent != null){
 				node.parent.degree--;
@@ -339,7 +339,7 @@ public class FibonacciHeap{
 		while(!queue.isEmpty()){
 			FibonacciNode check_node = queue.remove();
 			if(check_node.vertex.id == id){
-				System.out.println("find: Node with node id: "+id+"  found");
+				//System.out.println("find: Node with node id: "+id+"  found");
 				return check_node;
 			}
 			else{
@@ -359,14 +359,14 @@ public class FibonacciHeap{
 	}
 
 	public void decreaseKey(int id, long new_key){
-		System.out.println("DecreaseKey called");
+		//System.out.println("DecreaseKey called");
 		FibonacciNode node = find(id);
 		long old_val = node.vertex.distance;
 		node.vertex.distance = new_key;
 		if(node.parent == null){
 			// node is one of the min trees			
 			head = (node.vertex.distance < head.vertex.distance)?node:head;
-			System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is root of a min tree");
+			//System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is root of a min tree");
 			return;
 		}
 		else{
@@ -377,7 +377,7 @@ public class FibonacciHeap{
 				meld(head,node);
 				updateMin();
 			}
-			System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is not a root of a min tree");
+			//System.out.println("decreaseKey: of id: "+id+" from: "+old_val+"   to: "+new_key+"  node is not a root of a min tree");
 			return;
 		}
 	}
