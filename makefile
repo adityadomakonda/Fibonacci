@@ -43,6 +43,7 @@ CLASSES = \
 		Graph.java \
 		FibonacciNode.java \
 		FibonacciHeap.java \
+		AdjacencyNode.java \
 		Global.java 
 
 
