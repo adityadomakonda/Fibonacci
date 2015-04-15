@@ -67,7 +67,7 @@ public class FibonacciHeap{
 			// change childs parent to nulls
 			if(child == null){
 				updateMin();
-				System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
+				//System.out.println("removeMin: removed vertex with id: "+min.vertex.id+"   distance: "+min.vertex.distance);
 				return min.vertex;
 			}
 			FibonacciNode cur = child.right;
@@ -79,7 +79,7 @@ public class FibonacciHeap{
 			meld(head,child);
 			pairWiseMerge();
 			updateMin();
-			System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
+			//System.out.println("removeMin: removed vertex with id: "+min.vertex.id);
 			return min.vertex;
 		}
 	}

@@ -4,3 +4,7 @@ javac AdjacencyNode.java
 javac FibonacciNode.java
 javac FibonacciHeap.java
 javac Global.java
+javac TrieNode.java
+javac Trie.java
+javac routing.java
+javac ssp.java
