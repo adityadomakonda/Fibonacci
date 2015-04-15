@@ -44,7 +44,10 @@ CLASSES = \
 		FibonacciNode.java \
 		FibonacciHeap.java \
 		AdjacencyNode.java \
-		Global.java 
+		TrieNode.java \
+		Trie.java \
+		routing.java \
+		ssp.java
 
 
 #
