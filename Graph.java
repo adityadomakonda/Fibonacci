@@ -91,8 +91,8 @@ public class Graph{
 		while(heap.head != null){
 			//GraphNode min = heap.poll();
 			GraphNode min = heap.removeMin();
-			count++;
-			System.out.println(count);
+			//count++;
+			//System.out.println(count);
 			if(min.id == destination){
 				//System.out.println("Shortest Distance between node: "+source+"  and node: "+destination+"  is: "+min.distance+"\n with path: "+min.path);
 				return min.distance;
