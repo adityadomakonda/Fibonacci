@@ -46,7 +46,7 @@ public class FibonacciHeap{
 	}
 
 	public GraphNode removeMin(){
-		System.out.print(".");
+		//System.out.print(".");
 		if(head == null){
 			// Heap is empty
 			System.out.println("removeMin failed: Heap is empty");

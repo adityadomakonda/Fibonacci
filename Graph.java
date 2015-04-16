@@ -87,9 +87,12 @@ public class Graph{
 		start_node.path = Integer.toString(start_node.id);
 		heap.insert(start_node);
 		visited.add(start_node.id);
+		long count = 0;
 		while(heap.head != null){
 			//GraphNode min = heap.poll();
 			GraphNode min = heap.removeMin();
+			count++;
+			System.out.println(count);
 			if(min.id == destination){
 				//System.out.println("Shortest Distance between node: "+source+"  and node: "+destination+"  is: "+min.distance+"\n with path: "+min.path);
 				return min.distance;
